@@ -18,6 +18,8 @@ use of this plugin.
 ## Usage
 The plugin requires Gradle 2.5.  If using j2objc-gradle, version 0.3.0-alpha or higher is needed.
 
+Get the proper syntax for applying the plugin [the mixc-build page at plugins.gradle.org](https://plugins.gradle.org/plugin/com.madvay.tools.build.mixc).
+
 ```
 apply plugin: 'com.madvay.tools.build.mixc'
 
