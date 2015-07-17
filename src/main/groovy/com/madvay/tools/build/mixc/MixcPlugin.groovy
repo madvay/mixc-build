@@ -30,13 +30,13 @@ import org.gradle.model.*
 class MixcPlugin extends RuleSource implements Plugin<Project> {
 
     @Model("mixc")
-    MixcExtension mixc() { return new MixcExtension() }
+    MixcModel mixc() { return new MixcModel() }
 
     // This is guaranteed to run after the configs are finalized,
     // but before the tasks are finalized.
     @Mutate
     void taskConfig(ModelMap<Task> tasks,
-                    @Path("mixc") MixcExtension mixcConfig) {
+                    @Path("mixc") MixcModel mixcConfig) {
         // Prebuild phase.  We need all native builds (whether j2objc or custom) to occur
         // before our own xcode builds.
         tasks.create 'xcodePreBuildDebug', DefaultTask, {

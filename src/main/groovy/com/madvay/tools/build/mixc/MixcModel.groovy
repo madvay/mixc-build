@@ -22,7 +22,7 @@ import org.gradle.util.ConfigureUtil
 /**
  *
  */
-class MixcExtension {
+class MixcModel {
 
     List<String> nativeProjects = []
     List<String> j2objcProjects = []
