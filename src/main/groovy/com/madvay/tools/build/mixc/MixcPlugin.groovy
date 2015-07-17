@@ -38,6 +38,9 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
     @Mutate
     void taskConfig(ModelMap<Task> tasks,
                     @Path("mixc") MixcModel mixcConfig) {
+        boolean debugEnabled = mixcConfig.debugEnabled
+        boolean releaseEnabled = mixcConfig.releaseEnabled
+
         // Prebuild phase.  We need all native builds (whether j2objc or custom) to occur
         // before our own xcode builds.
         tasks.create 'xcodePreBuildDebug', DefaultTask, {
@@ -48,6 +51,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
             mixcConfig.nativeProjects.each { String projName ->
                 dependsOn "$projName:build"
             }
+            enabled = debugEnabled
         }
         tasks.create 'xcodePreBuildRelease', DefaultTask, {
             it.group = 'build'
@@ -57,6 +61,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
             mixcConfig.nativeProjects.each { String projName ->
                 dependsOn "$projName:build"
             }
+            enabled = releaseEnabled
         }
         tasks.create 'xcodePreBuild', DefaultTask, {
             it.dependsOn 'xcodePreBuildDebug'
@@ -78,6 +83,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 j2objcProjects = mixcConfig.j2objcProjects
                 nativeProjects = mixcConfig.nativeProjects
                 group = 'build'
+                enabled = debugEnabled
             }
 
             tasks.create "xcode${nameFirstUpper}BuildRelease", XcodeBuildTask, {
@@ -89,6 +95,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 j2objcProjects = mixcConfig.j2objcProjects
                 nativeProjects = mixcConfig.nativeProjects
                 group = 'build'
+                enabled = releaseEnabled
             }
 
             tasks.get('assemble').dependsOn(
@@ -104,6 +111,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 j2objcProjects = mixcConfig.j2objcProjects
                 nativeProjects = mixcConfig.nativeProjects
                 group = 'build'
+                enabled = debugEnabled
             }
 
             tasks.create "xcode${nameFirstUpper}CleanRelease", XcodeBuildTask, {
@@ -115,6 +123,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 j2objcProjects = mixcConfig.j2objcProjects
                 nativeProjects = mixcConfig.nativeProjects
                 group = 'build'
+                enabled = releaseEnabled
             }
 
             tasks.get('clean').dependsOn(
@@ -134,6 +143,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                     group = 'verification'
                     scheme = val.testTarget
                     target = val.testTarget
+                    enabled = debugEnabled
                 }
 
                 tasks.create "xcode${nameFirstUpper}TestRelease", XcodeBuildTask, {
@@ -148,6 +158,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                     group = 'verification'
                     scheme = val.testTarget
                     target = val.testTarget
+                    enabled = releaseEnabled
                 }
 
                 tasks.get('check').dependsOn(

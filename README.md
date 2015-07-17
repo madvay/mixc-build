@@ -29,6 +29,11 @@ model {
         nativeProject ':native-objc1'
         nativeProject ':native-cpp2'
 
+        // Uncomment if you don't want release flavors built every time.
+        // (debug and release are enabled by default).
+        // releaseEnabled = false
+        debugEnabled = true
+
         xcodeProject 'ios', {
             // Do NOT put the Gradle project and the Xcode project in the same directory./
             // The build/ subdirectories will conflict.
