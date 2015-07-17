@@ -16,7 +16,7 @@ you can hook them up to your Xcode builds too - which was indeed the original au
 use of this plugin.
 
 ## Usage
-Get the proper syntax for applying the plugin [the mixc-build page at plugins.gradle.org](https://plugins.gradle.org/plugin/com.madvay.tools.build.mixc).
+Find the proper syntax for applying the plugin on [the mixc-build page at plugins.gradle.org](https://plugins.gradle.org/plugin/com.madvay.tools.build.mixc).
 
 ```
 apply plugin: 'com.madvay.tools.build.mixc'
