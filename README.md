@@ -1,7 +1,7 @@
 # mixc-build
 Simple execution of Xcode iOS/Mac OS X builds in Gradle projects.
 
-## Use
+## Overview
 This plugin lets you hook up Xcode projects into your Gradle projects and toolchain,
 including adding dependencies from those Xcode projects to other Gradle projects,
 such as those built using the
@@ -14,6 +14,35 @@ and [j2objc-gradle](https://github.com/j2objc-contrib/j2objc-gradle)
 (which incorporates j2objc in your Gradle builds).  Once you have j2objc-gradle projects,
 you can hook them up to your Xcode builds too - which was indeed the original author's
 use of this plugin.
+
+## Usage
+
+```
+apply plugin: 'com.madvay.tools.build.mixc'
+
+import com.madvay.tools.build.mixc.XcodeBuildTask
+
+model {
+    mixc {
+        j2objcProject ':common1'
+        j2objcProject ':common2'
+
+        nativeProject ':native-objc1'
+        nativeProject ':native-cpp2'
+
+        xcodeProject 'ios', {
+            dir = file('../app-ios')
+            projectName = 'app-ios'
+        }
+
+        xcodeProject 'osx', {
+            dir = file('../app-mac')
+            projectName = 'app-mac'
+            sdk = 'macosx'
+        }
+    }
+}
+```
 
 ## License
 See [LICENSE](LICENSE).
