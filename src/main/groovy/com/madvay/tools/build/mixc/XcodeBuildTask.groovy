@@ -16,6 +16,7 @@
  */
 
 package com.madvay.tools.build.mixc
+
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.*
@@ -53,8 +54,7 @@ class XcodeBuildTask extends DefaultTask {
     @InputFiles
     FileCollection getInputXcodeFiles() {
         return project.fileTree(dir, {
-            include '**/*'
-            exclude '**/build'
+            exclude '**/build/**'
         })
     }
 
@@ -66,8 +66,13 @@ class XcodeBuildTask extends DefaultTask {
     String sdk
     @Input
     String xcodeProject
-    @InputDirectory
-    File dir
+    @Input
+    String dirPath
+
+    File getDir() {
+        return project.file(dirPath)
+    }
+
     @Input
     @Optional
     String target

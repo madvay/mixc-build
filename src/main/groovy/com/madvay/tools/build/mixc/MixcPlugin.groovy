@@ -70,7 +70,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
 
             tasks.create "xcode${nameFirstUpper}BuildDebug", XcodeBuildTask, {
                 config = 'Debug'
-                dir = val.dir
+                dirPath = val.dir.absolutePath
                 dependsOn 'xcodePreBuildDebug'
                 xcodeProject = val.projectName
                 sdk = val.sdk
@@ -81,7 +81,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
 
             tasks.create "xcode${nameFirstUpper}BuildRelease", XcodeBuildTask, {
                 config = 'Release'
-                dir = val.dir
+                dirPath = val.dir.absolutePath
                 dependsOn 'xcodePreBuildRelease'
                 xcodeProject = val.projectName
                 sdk = val.sdk
@@ -96,7 +96,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
 
             tasks.create "xcode${nameFirstUpper}CleanDebug", XcodeBuildTask, {
                 config = 'Debug'
-                dir = val.dir
+                dirPath = val.dir.absolutePath
                 taskType 'clean'
                 xcodeProject = val.projectName
                 sdk = val.sdk
@@ -107,7 +107,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
 
             tasks.create "xcode${nameFirstUpper}CleanRelease", XcodeBuildTask, {
                 config = 'Release'
-                dir = val.dir
+                dirPath = val.dir.absolutePath
                 taskType 'clean'
                 xcodeProject = val.projectName
                 sdk = val.sdk
@@ -119,6 +119,40 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
             tasks.get('clean').dependsOn(
                     "xcode${nameFirstUpper}CleanDebug",
                     "xcode${nameFirstUpper}CleanRelease")
+
+            if (val.testTarget != null) {
+                tasks.create "xcode${nameFirstUpper}TestDebug", XcodeBuildTask, {
+                    dependsOn "xcode${nameFirstUpper}BuildDebug"
+                    config = 'Debug'
+                    dirPath = val.dir.absolutePath
+                    taskType 'test'
+                    xcodeProject = val.projectName
+                    sdk = val.sdk
+                    j2objcProjects = mixcConfig.j2objcProjects
+                    nativeProjects = mixcConfig.nativeProjects
+                    group = 'verification'
+                    scheme = val.testTarget
+                    target = val.testTarget
+                }
+
+                tasks.create "xcode${nameFirstUpper}TestRelease", XcodeBuildTask, {
+                    dependsOn "xcode${nameFirstUpper}BuildRelease"
+                    config = 'Release'
+                    dirPath = val.dir.absolutePath
+                    taskType 'test'
+                    xcodeProject = val.projectName
+                    sdk = val.sdk
+                    j2objcProjects = mixcConfig.j2objcProjects
+                    nativeProjects = mixcConfig.nativeProjects
+                    group = 'verification'
+                    scheme = val.testTarget
+                    target = val.testTarget
+                }
+
+                tasks.get('check').dependsOn(
+                        "xcode${nameFirstUpper}TestDebug",
+                        "xcode${nameFirstUpper}TestRelease")
+            }
         }
     }
 

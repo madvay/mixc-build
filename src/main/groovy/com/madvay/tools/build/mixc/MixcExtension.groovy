@@ -18,6 +18,7 @@
 package com.madvay.tools.build.mixc
 
 import org.gradle.util.ConfigureUtil
+
 /**
  *
  */
@@ -26,23 +27,33 @@ class MixcExtension {
     List<String> nativeProjects = []
     List<String> j2objcProjects = []
 
+    /** Adds the name of a j2objc project this Xcode project depends on */
     void j2objcProject(String name) {
         j2objcProjects.add name
     }
 
+    /** Adds the name of a native project this Xcode project depends on */
     void nativeProject(String name) {
         nativeProjects.add name
     }
 
     static class XcodeProject {
+        /** Name of the project for Gradle purposes */
         String name
+        /** Xcode project name (ex. projectName.xcproj) */
         String projectName
+        // Directory containing the project and source files
         File dir
+        // Sdk type for the build.
         String sdk = 'iphonesimulator'
+        // If non-null will run the test target with the scheme
+        // of the same name.
+        String testTarget = null
     }
 
     Map<String, XcodeProject> projects = [:]
 
+    /** Defines a new Xcode project and configures it. */
     void xcodeProject(String name, @DelegatesTo(XcodeProject) Closure cl) {
         XcodeProject newP = new XcodeProject(name: name)
         projects.put name, newP
