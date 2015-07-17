@@ -30,6 +30,8 @@ model {
         nativeProject ':native-cpp2'
 
         xcodeProject 'ios', {
+            // Do NOT put the Gradle project and the Xcode project in the same directory./
+            // The build/ subdirectories will conflict.
             dir = file('../app-ios')
             projectName = 'app-ios'
             // Will not run tests by default.
