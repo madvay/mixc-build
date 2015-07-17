@@ -21,8 +21,6 @@ The plugin is compatible with Gradle 2.5 and j2objc-gradle 0.3.0-alpha.
 ```
 apply plugin: 'com.madvay.tools.build.mixc'
 
-import com.madvay.tools.build.mixc.XcodeBuildTask
-
 model {
     mixc {
         j2objcProject ':common1'
@@ -34,16 +32,45 @@ model {
         xcodeProject 'ios', {
             dir = file('../app-ios')
             projectName = 'app-ios'
+            // Will not run tests by default.
         }
 
         xcodeProject 'osx', {
             dir = file('../app-mac')
             projectName = 'app-mac'
             sdk = 'macosx'
+            // Will also run this target for unit tests.
+            testTarget = 'app-macUnitTests'
         }
     }
 }
 ```
+
+This will create tasks such as:
+
+```
+xcodePreBuildDebug
+xcodePreBuildRelease
+xcodePreBuild
+
+xcodeIosBuildDebug
+xcodeIosBuildRelease
+
+xcodeIosCleanDebug
+xcodeIosCleanRelease
+
+xcodeOsxBuildDebug
+xcodeOsxBuildRelease
+
+xcodeOsxCleanDebug
+xcodeOsxCleanRelease
+
+xcodeOsxTestDebug
+xcodeOsxTestRelease
+```
+
+The build tasks are made children of `assemble`, the clean tasks of `clean`,
+and the test tasks of `check`.
 
 ## License
 See [LICENSE](LICENSE).
