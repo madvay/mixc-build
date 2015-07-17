@@ -24,6 +24,9 @@ import org.gradle.util.ConfigureUtil
  */
 class MixcModel {
 
+    boolean debugEnabled = true
+    boolean releaseEnabled = true
+
     List<String> nativeProjects = []
     List<String> j2objcProjects = []
 
@@ -42,13 +45,25 @@ class MixcModel {
         String name
         /** Xcode project name (ex. projectName.xcproj) */
         String projectName
-        // Directory containing the project and source files
+        /** Directory containing the project and source files */
         File dir
-        // Sdk type for the build.
+        /** Sdk type for the build. */
         String sdk = 'iphonesimulator'
-        // If non-null will run the test target with the scheme
-        // of the same name.
+        /**
+         * If non-null will run the test target with the scheme
+         * of the same name.`
+         */
         String testTarget = null
+        /**
+         * names of other XcodeProject this project depends on.
+         */
+        List<String> dependsOnXcodeProjects = []
+        /**
+         * Adds name of an XcodeProject this project depends on.
+         */
+        void dependsOnXcodeProject(String name) {
+            dependsOnXcodeProjects.add name
+        }
     }
 
     Map<String, XcodeProject> projects = [:]

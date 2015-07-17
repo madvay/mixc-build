@@ -43,6 +43,8 @@ model {
             sdk = 'macosx'
             // Will also run this target for unit tests.
             testTarget = 'app-macUnitTests'
+            // Will depend on the 'ios' build above.
+            dependsOnXcodeProject 'ios'
         }
     }
 }

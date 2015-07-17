@@ -21,6 +21,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.file.FileCollection
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 import org.gradle.model.*
 
@@ -153,6 +154,37 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                         "xcode${nameFirstUpper}TestDebug",
                         "xcode${nameFirstUpper}TestRelease")
             }
+        }
+
+        // Now that all the projects' tasks have been created, we can also setup
+        // cross-project dependencies.
+        mixcConfig.projects.entrySet().each {
+            def afterName = it.key
+            def afterNameFirstUpper = "${afterName.toUpperCase()[0]}${afterName.substring(1)}"
+            def afterVal = it.value
+
+            XcodeBuildTask afterBuildDebug = tasks.get("xcode${afterNameFirstUpper}BuildDebug") as
+                    XcodeBuildTask
+            XcodeBuildTask afterBuildRelease = tasks.get("xcode${afterNameFirstUpper}BuildRelease") as
+                    XcodeBuildTask
+            FileCollection otherInputs = null
+
+            afterVal.dependsOnXcodeProjects.each { String beforeName ->
+                def beforeNameFirstUpper = "${beforeName.toUpperCase()[0]}${beforeName.substring(1)}"
+                FileCollection beforeInputs = (tasks.get("xcode${beforeNameFirstUpper}BuildDebug") as
+                        XcodeBuildTask).getInputXcodeFiles()
+                if (otherInputs == null) {
+                    otherInputs = beforeInputs
+                } else {
+                    otherInputs = otherInputs.plus(beforeInputs)
+                }
+
+                afterBuildDebug.dependsOn "xcode${beforeNameFirstUpper}BuildDebug"
+                afterBuildRelease.dependsOn "xcode${beforeNameFirstUpper}BuildRelease"
+            }
+
+            afterBuildDebug.additionalInputFiles = otherInputs
+            afterBuildRelease.additionalInputFiles = otherInputs
         }
     }
 
