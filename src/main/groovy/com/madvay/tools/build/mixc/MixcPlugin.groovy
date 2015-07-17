@@ -106,7 +106,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
             }
 
             tasks.create "xcode${nameFirstUpper}CleanRelease", XcodeBuildTask, {
-                config = 'Debug'
+                config = 'Release'
                 dir = val.dir
                 taskType 'clean'
                 xcodeProject = val.projectName
