@@ -178,6 +178,10 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                     XcodeBuildTask
             XcodeBuildTask afterBuildRelease = tasks.get("xcode${afterNameFirstUpper}BuildRelease") as
                     XcodeBuildTask
+            XcodeBuildTask afterTestDebug = tasks.get("xcode${afterNameFirstUpper}TestDebug") as
+                    XcodeBuildTask
+            XcodeBuildTask afterTestRelease = tasks.get("xcode${afterNameFirstUpper}TestRelease") as
+                    XcodeBuildTask
             FileCollection otherInputs = null
 
             afterVal.dependsOnXcodeProjects.each { String beforeName ->
@@ -196,6 +200,12 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
 
             afterBuildDebug.additionalInputFiles = otherInputs
             afterBuildRelease.additionalInputFiles = otherInputs
+            if (afterTestDebug != null) {
+                afterTestDebug.additionalInputFiles = otherInputs
+            }
+            if (afterTestRelease != null) {
+                afterTestRelease.additionalInputFiles = otherInputs
+            }
         }
     }
 
