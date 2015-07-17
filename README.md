@@ -16,6 +16,7 @@ you can hook them up to your Xcode builds too - which was indeed the original au
 use of this plugin.
 
 ## Usage
+The plugin is compatible with Gradle 2.5 and j2objc-gradle 0.3.0-alpha.
 
 ```
 apply plugin: 'com.madvay.tools.build.mixc'
