@@ -15,16 +15,17 @@
  *
  */
 
-group 'com.madvay.tools.build'
-version '0.1.0-alpha'
-
-task wrapper(type: Wrapper) {
-  gradleVersion = '2.5'
-  distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+plugins {
+    id "com.gradle.plugin-publish" version "0.9.1"
 }
 
 apply plugin: 'groovy'
 apply plugin: 'java'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.5'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
 
 repositories {
     mavenCentral()
@@ -32,4 +33,25 @@ repositories {
 
 dependencies {
     compile gradleApi()
+}
+
+
+
+group 'com.madvay.tools.build'
+version '0.1.0-alpha'
+
+// The configuration example below shows the minimum required properties
+// configured to publish your plugin to the plugin portal
+pluginBundle {
+    website = 'https://madvay.com/source/mixc-build'
+    vcsUrl = 'https://github.com/madvay/mixc-build'
+    description = 'Simple execution of Xcode iOS/Mac OS X builds in Gradle projects.'
+    tags = ['xcode', 'ios', 'j2objc', 'j2objc-gradle', 'mac', 'osx', 'native']
+
+    plugins {
+        mixc {
+            id = 'com.madvay.tools.build.mixc'
+            displayName = 'mixc-build: Build Xcode projects within Gradle.'
+        }
+    }
 }
