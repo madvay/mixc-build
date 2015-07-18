@@ -36,6 +36,9 @@ class XcodeBuildTask extends DefaultTask {
         dirs.addAll j2objcProjects.collect({ String projectName ->
             "${project.project(projectName).buildDir}/j2objcOutput"
         })
+        dirs.addAll j2objcProjects.collect({ String projectName ->
+            "${project.project(projectName).buildDir}/resources"
+        })
         dirs.addAll nativeProjects.collect({ String projectName ->
             "${project.project(projectName).buildDir}/binaries"
         })
