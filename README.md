@@ -16,9 +16,7 @@ you can hook them up to your Xcode builds too - which was indeed the original au
 use of this plugin.
 
 ## Usage
-The plugin requires Gradle 2.5.  If using j2objc-gradle, version 0.3.0-alpha or higher is needed.
-
-Get the proper syntax for applying the plugin [the mixc-build page at plugins.gradle.org](https://plugins.gradle.org/plugin/com.madvay.tools.build.mixc).
+Find the proper syntax for applying the plugin on [the mixc-build page at plugins.gradle.org](https://plugins.gradle.org/plugin/com.madvay.tools.build.mixc).
 
 ```
 apply plugin: 'com.madvay.tools.build.mixc'
@@ -82,6 +80,12 @@ xcodeOsxTestRelease
 
 The build tasks are made children of `assemble`, the clean tasks of `clean`,
 and the test tasks of `check`.
+
+## Requirements
+- Gradle 2.5 or higher
+- Mac computer, with Mac OS X 10.10 or higher
+- Xcode 6 or higher
+- If using j2objc-gradle, v0.3.0-alpha or higher
 
 ## License
 See [LICENSE](LICENSE).
