@@ -47,6 +47,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
             it.group = 'build'
             mixcConfig.j2objcProjects.each { String projName ->
                 dependsOn "$projName:j2objcBuildDebug"
+                dependsOn "$projName:processResources"
             }
             mixcConfig.nativeProjects.each { String projName ->
                 dependsOn "$projName:build"
@@ -57,6 +58,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
             it.group = 'build'
             mixcConfig.j2objcProjects.each { String projName ->
                 dependsOn "$projName:j2objcBuildRelease"
+                dependsOn "$projName:processResources"
             }
             mixcConfig.nativeProjects.each { String projName ->
                 dependsOn "$projName:build"
