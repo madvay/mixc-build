@@ -1,5 +1,5 @@
 # mixc-build
-Simple execution of Xcode iOS/Mac OS X builds in Gradle projects.
+Simple execution of Xcode iOS/Mac OS X builds and tests in Gradle projects.
 
 ## Overview
 This plugin lets you hook up Xcode projects into your Gradle projects and toolchain,
