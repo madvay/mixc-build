@@ -71,8 +71,18 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
             it.group = 'build'
         }
 
+
+        tasks.create 'xcodeArchive', DefaultTask, {
+            it.group = 'build'
+        }
+
+        tasks.create 'xcodeExport', DefaultTask, {
+            it.group = 'build'
+        }
+
         mixcConfig.projects.entrySet().each {
             def name = it.key
+            def projName = name
             def nameFirstUpper = "${name.toUpperCase()[0]}${name.substring(1)}"
             def val = it.value
 
@@ -103,6 +113,55 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
             tasks.get('assemble').dependsOn(
                     "xcode${nameFirstUpper}BuildDebug",
                     "xcode${nameFirstUpper}BuildRelease")
+
+            tasks.create "xcode${nameFirstUpper}ArchiveRelease", XcodeBuildTask, {
+                config = 'Release'
+                dirPath = val.dir.absolutePath
+                dependsOn "xcode${nameFirstUpper}BuildRelease"
+                taskType 'archive'
+                xcodeProject = val.projectName
+                scheme = val.projectName
+                sdk = val.sdk
+                archivePath = "archives/${val.projectName}.xcarchive"
+                j2objcProjects = mixcConfig.j2objcProjects
+                nativeProjects = mixcConfig.nativeProjects
+                group = 'build'
+                enabled = releaseEnabled
+            }
+
+            tasks.get('xcodeArchive').dependsOn(
+                    "xcode${nameFirstUpper}ArchiveRelease")
+
+            tasks.create "xcode${nameFirstUpper}ExportRelease", XcodeBuildTask, {
+                config = 'Release'
+                dirPath = val.dir.absolutePath
+                dependsOn "xcode${nameFirstUpper}ArchiveRelease"
+                taskType 'export'
+                xcodeProject = val.projectName
+                scheme = val.projectName
+                sdk = val.sdk
+                archivePath = "archives/${val.projectName}.xcarchive"
+                exportPath = "exports/$val.projectName"
+                j2objcProjects = mixcConfig.j2objcProjects
+                nativeProjects = mixcConfig.nativeProjects
+                group = 'build'
+                enabled = releaseEnabled
+            }
+
+            tasks.get('xcodeExport').dependsOn(
+                    "xcode${nameFirstUpper}ExportRelease")
+
+
+            tasks.create "xcode${nameFirstUpper}CleanAll", XcodeBuildTask, {
+                dirPath = val.dir.absolutePath
+                taskType 'clean'
+                xcodeProject = val.projectName
+                sdk = val.sdk
+                j2objcProjects = mixcConfig.j2objcProjects
+                nativeProjects = mixcConfig.nativeProjects
+                group = 'build'
+                enabled = debugEnabled
+            }
 
             tasks.create "xcode${nameFirstUpper}CleanDebug", XcodeBuildTask, {
                 config = 'Debug'

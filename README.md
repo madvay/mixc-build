@@ -64,22 +64,32 @@ xcodePreBuild
 
 xcodeIosBuildDebug
 xcodeIosBuildRelease
+xcodeIosArchiveRelease
+xcodeIosExportRelease
 
 xcodeIosCleanDebug
 xcodeIosCleanRelease
 
 xcodeOsxBuildDebug
 xcodeOsxBuildRelease
+xcodeOsxArchiveRelease
+xcodeOsxExportRelease
 
 xcodeOsxCleanDebug
 xcodeOsxCleanRelease
 
 xcodeOsxTestDebug
 xcodeOsxTestRelease
+
+xcodeArchive
+xcodeExport
 ```
 
 The build tasks are made children of `assemble`, the clean tasks of `clean`,
-and the test tasks of `check`.
+and the test tasks of `check`.  The archive and export (of release flavors
+only) are outside of the normal task tree; run `xcodeExport` to get .pkg
+and .ipa (for OS X and iOS respectively) exports in your projects' exports/
+directories.
 
 ## Requirements
 - Gradle 2.5 or higher

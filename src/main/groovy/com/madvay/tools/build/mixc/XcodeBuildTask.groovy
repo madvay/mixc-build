@@ -61,7 +61,7 @@ class XcodeBuildTask extends DefaultTask {
         })
     }
 
-    @Input
+    @Input @Optional
     String config
     @Input
     String taskType = 'build'
@@ -71,6 +71,31 @@ class XcodeBuildTask extends DefaultTask {
     String xcodeProject
     @Input
     String dirPath
+    @Input
+    @Optional
+    String archivePath
+    @Input
+    @Optional
+    String exportPath
+
+    @OutputDirectory
+    @Optional
+    File getOutputArchivePath() {
+        return taskType == 'archive' && archivePath != null ? new File(dir, archivePath) : null
+    }
+
+    @InputDirectory
+    @Optional
+    File getInputArchivePath() {
+        return taskType == 'export' && archivePath != null ? new File(dir, archivePath) : null
+    }
+
+    @OutputFile
+    @Optional
+    File getOutputExportPath() {
+        def ext = sdk == 'macosx' ? '.pkg' : '.ipa'
+        return taskType == 'export' && exportPath != null ? new File(dir, exportPath + ext) : null
+    }
 
     File getDir() {
         return project.file(dirPath)
@@ -109,24 +134,51 @@ class XcodeBuildTask extends DefaultTask {
     void build() {
         def output = new ByteArrayOutputStream()
         try {
-            project.exec {
-                workingDir dir
-                executable 'xcrun'
-                args 'xcodebuild'
-                if (target != null) {
-                    args '-target', target
-                } else {
-                    args '-alltargets'
+            if (taskType == 'export') {
+                if (outputExportPath.exists()) {
+                    outputExportPath.delete()
                 }
-                if (scheme != null) {
-                    args '-scheme', scheme
+                project.exec {
+                    workingDir dir
+                    executable 'xcrun'
+                    args 'xcodebuild'
+                    args '-exportArchive'
+                    args '-archivePath', archivePath
+                    args '-exportPath', exportPath
+                    standardOutput output
+                    errorOutput output
+                    environment 'WITHIN_IOS_APP_GRADLE_BUILD', 'YES'
                 }
-                args '-configuration', config
-                args '-sdk', sdk
-                args '-parallelizeTargets', taskType
-                standardOutput output
-                errorOutput output
-                environment 'WITHIN_IOS_APP_GRADLE_BUILD', 'YES'
+            } else {
+                if (taskType == 'archive') {
+                    if (outputArchivePath.exists()) {
+                        outputArchivePath.deleteDir()
+                    }
+                }
+                project.exec {
+                    workingDir dir
+                    executable 'xcrun'
+                    args 'xcodebuild'
+                    if (target != null) {
+                        args '-target', target
+                    } else {
+                        args '-alltargets'
+                    }
+                    if (scheme != null) {
+                        args '-scheme', scheme
+                    }
+                    if (config != null) {
+                        args '-configuration', config
+                    }
+                    args '-sdk', sdk
+                    args '-parallelizeTargets', taskType
+                    if (archivePath != null) {
+                        args '-archivePath', archivePath
+                    }
+                    standardOutput output
+                    errorOutput output
+                    environment 'WITHIN_IOS_APP_GRADLE_BUILD', 'YES'
+                }
             }
         } catch (e) {
             logger.error 'Failed to run xcodebuild:'
