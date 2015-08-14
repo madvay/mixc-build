@@ -18,7 +18,7 @@ use of this plugin.
 ## Usage
 Find the proper syntax for applying the plugin on [the mixc-build page at plugins.gradle.org](https://plugins.gradle.org/plugin/com.madvay.tools.build.mixc).
 
-```
+```gradle
 apply plugin: 'com.madvay.tools.build.mixc'
 
 model {
