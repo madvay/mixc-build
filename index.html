@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>mixc-build by madvay</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>mixc-build</h1>
+        <h2>Simple execution of Xcode builds for iOS and Mac OS X, in Gradle projects</h2>
+        <a href="https://github.com/madvay/mixc-build" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="mixc-build" class="anchor" href="#mixc-build" aria-hidden="true"><span class="octicon octicon-link"></span></a>mixc-build</h1>
+
+<p>Simple execution of Xcode iOS/Mac OS X builds, tests, archivals, and exports via Gradle projects.</p>
+
+<h2>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>This plugin lets you hook up Xcode projects into your Gradle projects and toolchain,
+including adding dependencies from those Xcode projects to other Gradle projects,
+such as those built using the
+<a href="https://docs.gradle.org/current/userguide/nativeBinaries.html">Objective-C plugin</a>
+or other native build plugins.</p>
+
+<p>If you have 1 or more Java Gradle projects you want to build as native Objective-C,
+consider <a href="https://github.com/google/j2objc">j2objc</a> (which converts Java to Objective-C)
+and <a href="https://github.com/j2objc-contrib/j2objc-gradle">j2objc-gradle</a>
+(which incorporates j2objc in your Gradle builds).  Once you have j2objc-gradle projects,
+you can hook them up to your Xcode builds too - which was indeed the original author's
+use of this plugin.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Find the proper syntax for applying the plugin on <a href="https://plugins.gradle.org/plugin/com.madvay.tools.build.mixc">the mixc-build page at plugins.gradle.org</a>.</p>
+
+<div class="highlight highlight-gradle"><pre>apply <span class="pl-c1">plugin</span>: <span class="pl-s"><span class="pl-pds">'</span>com.madvay.tools.build.mixc<span class="pl-pds">'</span></span>
+
+<span class="pl-en">model</span> {
+    mixc {
+        j2objcProject <span class="pl-s"><span class="pl-pds">'</span>:common1<span class="pl-pds">'</span></span>
+        j2objcProject <span class="pl-s"><span class="pl-pds">'</span>:common2<span class="pl-pds">'</span></span>
+
+        nativeProject <span class="pl-s"><span class="pl-pds">'</span>:native-objc1<span class="pl-pds">'</span></span>
+        nativeProject <span class="pl-s"><span class="pl-pds">'</span>:native-cpp2<span class="pl-pds">'</span></span>
+
+        <span class="pl-c">// Uncomment if you don't want release flavors built every time.</span>
+        <span class="pl-c">// (debug and release are enabled by default).</span>
+        <span class="pl-c">// releaseEnabled = false</span>
+        debugEnabled <span class="pl-k">=</span> <span class="pl-c1">true</span>
+
+        xcodeProject <span class="pl-s"><span class="pl-pds">'</span>ios<span class="pl-pds">'</span></span>, {
+            <span class="pl-c">// Do NOT put the Gradle project and the Xcode project in the same directory./</span>
+            <span class="pl-c">// The build/ subdirectories will conflict.</span>
+            dir <span class="pl-k">=</span> file(<span class="pl-s"><span class="pl-pds">'</span>../app-ios<span class="pl-pds">'</span></span>)
+            projectName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>app-ios<span class="pl-pds">'</span></span>
+            <span class="pl-c">// Will not run tests by default.</span>
+        }
+
+        xcodeProject <span class="pl-s"><span class="pl-pds">'</span>osx<span class="pl-pds">'</span></span>, {
+            dir <span class="pl-k">=</span> file(<span class="pl-s"><span class="pl-pds">'</span>../app-mac<span class="pl-pds">'</span></span>)
+            projectName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>app-mac<span class="pl-pds">'</span></span>
+            sdk <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>macosx<span class="pl-pds">'</span></span>
+            <span class="pl-c">// Will also run this target for unit tests.</span>
+            testTarget <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>app-macUnitTests<span class="pl-pds">'</span></span>
+            <span class="pl-c">// Will depend on the 'ios' build above.</span>
+            dependsOnXcodeProject <span class="pl-s"><span class="pl-pds">'</span>ios<span class="pl-pds">'</span></span>
+        }
+    }
+}</pre></div>
+
+<p>This will create tasks such as:</p>
+
+<pre><code>xcodePreBuildDebug
+xcodePreBuildRelease
+xcodePreBuild
+
+xcodeIosBuildDebug
+xcodeIosBuildRelease
+xcodeIosArchiveRelease
+xcodeIosExportRelease
+
+xcodeIosCleanDebug
+xcodeIosCleanRelease
+
+xcodeOsxBuildDebug
+xcodeOsxBuildRelease
+xcodeOsxArchiveRelease
+xcodeOsxExportRelease
+
+xcodeOsxCleanDebug
+xcodeOsxCleanRelease
+
+xcodeOsxTestDebug
+xcodeOsxTestRelease
+
+xcodeArchive
+xcodeExport
+</code></pre>
+
+<p>The build tasks are made children of <code>assemble</code>, the clean tasks of <code>clean</code>,
+and the test tasks of <code>check</code>.  The archive and export (of release flavors
+only) are outside of the normal task tree; run <code>xcodeExport</code> to get .pkg
+and .ipa (for OS X and iOS respectively) exports in your projects' exports/
+directories.</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>Gradle 2.5 or higher</li>
+<li>Mac computer, with Mac OS X 10.10 or higher</li>
+<li>Xcode 6 or higher</li>
+<li>If using j2objc-gradle, v0.3.0-alpha or higher</li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>See <a href="https://github.com/madvay/mixc-build/blob/master/LICENSE">LICENSE</a>.
+See also the <a href="https://github.com/madvay/mixc-build/blob/master/NOTICE">NOTICE</a> file, per section 4 d of the License.</p>
+
+<pre><code>Copyright (c) 2015 by Advay Mengle.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this software except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/madvay/mixc-build/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/madvay/mixc-build/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/madvay/mixc-build"></a> is maintained by <a href="https://github.com/madvay">madvay</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
