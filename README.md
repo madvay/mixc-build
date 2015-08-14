@@ -35,7 +35,7 @@ model {
         debugEnabled = true
 
         xcodeProject 'ios', {
-            // Do NOT put the Gradle project and the Xcode project in the same directory./
+            // Do NOT put the Gradle project and the Xcode project in the same directory.
             // The build/ subdirectories will conflict.
             dir = file('../app-ios')
             projectName = 'app-ios'
