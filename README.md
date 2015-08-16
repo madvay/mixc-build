@@ -116,3 +116,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+## Endnotes
+Xcode, Mac, and OS X are trademarks of Apple Inc., registered in the U.S. and other countries.
+This project is not affiliated with Apple Inc.
+
+Gradle is a trademark of Gradle, Inc. in the United States and/or other jurisdictions.
+This project is not affiliated with Gradle, Inc.
+
