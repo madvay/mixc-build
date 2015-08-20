@@ -1,36 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
     <title>mixc-build by madvay</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>mixc-build</h1>
-        <h2>Simple execution of Xcode builds for iOS and Mac OS X, in Gradle projects</h2>
-        <a href="https://github.com/madvay/mixc-build" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/madvay/mixc-build">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/madvay/mixc-build/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/madvay/mixc-build/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>mixc-build</h1>
+          <p>Simple execution of Xcode builds for iOS and Mac OS X, in Gradle projects</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/madvay">madvay</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
 <a id="mixc-build" class="anchor" href="#mixc-build" aria-hidden="true"><span class="octicon octicon-link"></span></a>mixc-build</h1>
 
 <p>Simple execution of Xcode iOS/Mac OS X builds, tests, archivals, and exports via Gradle projects.</p>
+
+<p><a href="https://travis-ci.org/madvay/mixc-build"><img src="https://travis-ci.org/madvay/mixc-build.svg?branch=master" alt="Build Status"></a></p>
 
 <h2>
 <a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
@@ -69,7 +82,7 @@ use of this plugin.</p>
         debugEnabled <span class="pl-k">=</span> <span class="pl-c1">true</span>
 
         xcodeProject <span class="pl-s"><span class="pl-pds">'</span>ios<span class="pl-pds">'</span></span>, {
-            <span class="pl-c">// Do NOT put the Gradle project and the Xcode project in the same directory./</span>
+            <span class="pl-c">// Do NOT put the Gradle project and the Xcode project in the same directory.</span>
             <span class="pl-c">// The build/ subdirectories will conflict.</span>
             dir <span class="pl-k">=</span> file(<span class="pl-s"><span class="pl-pds">'</span>../app-ios<span class="pl-pds">'</span></span>)
             projectName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>app-ios<span class="pl-pds">'</span></span>
@@ -153,25 +166,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 </code></pre>
-        </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/madvay/mixc-build/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/madvay/mixc-build/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+<h2>
+<a id="endnotes" class="anchor" href="#endnotes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Endnotes</h2>
 
-          <p class="repo-owner"><a href="https://github.com/madvay/mixc-build"></a> is maintained by <a href="https://github.com/madvay">madvay</a>.</p>
+<p>Xcode, Mac, and OS X are trademarks of Apple Inc., registered in the U.S. and other countries.
+This project is not affiliated with Apple Inc.</p>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+<p>Gradle is a trademark of Gradle, Inc. in the United States and/or other jurisdictions.
+This project is not affiliated with Gradle, Inc.</p>
+      </section>
+
     </div>
-
-  
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
