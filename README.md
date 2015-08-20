@@ -1,6 +1,8 @@
 # mixc-build
 Simple execution of Xcode iOS/Mac OS X builds, tests, archivals, and exports via Gradle projects.
 
+[![Build Status](https://travis-ci.org/madvay/mixc-build.svg?branch=master)](https://travis-ci.org/madvay/mixc-build)
+
 ## Overview
 This plugin lets you hook up Xcode projects into your Gradle projects and toolchain,
 including adding dependencies from those Xcode projects to other Gradle projects,
