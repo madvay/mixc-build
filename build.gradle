@@ -46,7 +46,7 @@ dependencies {
 
 
 group 'com.madvay.tools.build'
-version '0.1.4-alpha'
+version '0.1.5-alpha-SNAPSHOT'
 
 // The configuration example below shows the minimum required properties
 // configured to publish your plugin to the plugin portal
