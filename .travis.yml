@@ -8,6 +8,7 @@ branches:
   only:
     - master
     - /^release.*$/
+    - /^v[0-9].*$/
 
 # Everything except Java 6.
 jdk:
