@@ -17,6 +17,14 @@
 
 plugins {
     id "com.gradle.plugin-publish" version "0.9.1"
+    id "com.madvay.tools.build.gitbuildinfo" version "0.1.3-alpha"
+}
+
+buildStamp {
+    // The git commit SHA will be appended to this url to generate the final url.
+    repoBaseUrl "https://github.com/madvay/mixc-build/tree/"
+    // BuildInfo.java will be added under this package.
+    packageName "com.madvay.tools.build.mixc"
 }
 
 apply plugin: 'groovy'
@@ -38,7 +46,7 @@ dependencies {
 
 
 group 'com.madvay.tools.build'
-version '0.1.3-alpha'
+version '0.1.4-alpha'
 
 // The configuration example below shows the minimum required properties
 // configured to publish your plugin to the plugin portal
