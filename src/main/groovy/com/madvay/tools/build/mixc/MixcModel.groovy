@@ -49,6 +49,11 @@ class MixcModel {
         File dir
         /** Sdk type for the build. */
         String sdk = 'iphonesimulator'
+	    /**
+         * If non-null will use the specified target instead
+         * of '-alltargets'.
+         */
+        String target = null
         /**
          * If non-null will run the test target with the scheme
          * of the same name.`
