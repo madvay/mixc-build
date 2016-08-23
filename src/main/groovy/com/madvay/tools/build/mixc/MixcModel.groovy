@@ -26,6 +26,8 @@ class MixcModel {
 
     boolean debugEnabled = true
     boolean releaseEnabled = true
+    /** if set to 'false', task dependency will not be created and can instead be configured in the build script */
+    boolean autoWireTasks = true
 
     List<String> nativeProjects = []
     List<String> j2objcProjects = []
