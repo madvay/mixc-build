@@ -96,6 +96,9 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 nativeProjects = mixcConfig.nativeProjects
                 group = 'build'
                 enabled = debugEnabled
+                provisioningProfile = val.provisioningProfile
+                provisioningProfileName = val.provisioningProfileName
+                codeSignIdentity = val.codeSignIdentity
             }
 
             tasks.create "xcode${nameFirstUpper}BuildRelease", XcodeBuildTask, {
@@ -108,6 +111,9 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 nativeProjects = mixcConfig.nativeProjects
                 group = 'build'
                 enabled = releaseEnabled
+                provisioningProfile = val.provisioningProfile
+                provisioningProfileName = val.provisioningProfileName
+                codeSignIdentity = val.codeSignIdentity
             }
 
             tasks.get('assemble').dependsOn(
@@ -127,6 +133,9 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 nativeProjects = mixcConfig.nativeProjects
                 group = 'build'
                 enabled = releaseEnabled
+                provisioningProfile = val.provisioningProfile
+                provisioningProfileName = val.provisioningProfileName
+                codeSignIdentity = val.codeSignIdentity
             }
 
             tasks.get('xcodeArchive').dependsOn(
@@ -146,6 +155,9 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 nativeProjects = mixcConfig.nativeProjects
                 group = 'build'
                 enabled = releaseEnabled
+                provisioningProfile = val.provisioningProfile
+                provisioningProfileName = val.provisioningProfileName
+                codeSignIdentity = val.codeSignIdentity
             }
 
             tasks.get('xcodeExport').dependsOn(

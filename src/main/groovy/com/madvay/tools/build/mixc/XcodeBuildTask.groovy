@@ -77,6 +77,15 @@ class XcodeBuildTask extends DefaultTask {
     @Input
     @Optional
     String exportPath
+    @Input
+    @Optional
+    String provisioningProfile
+    @Input
+    @Optional
+    String provisioningProfileName
+    @Input
+    @Optional
+    String codeSignIdentity
 
     @OutputDirectory
     @Optional
@@ -145,6 +154,9 @@ class XcodeBuildTask extends DefaultTask {
                     args '-exportArchive'
                     args '-archivePath', archivePath
                     args '-exportPath', exportPath
+                    if (provisioningProfileName != null) {
+                        args '-exportProvisioningProfile', provisioningProfileName
+                    }
                     standardOutput output
                     errorOutput output
                     environment 'WITHIN_IOS_APP_GRADLE_BUILD', 'YES'
@@ -174,6 +186,12 @@ class XcodeBuildTask extends DefaultTask {
                     args '-parallelizeTargets', taskType
                     if (archivePath != null) {
                         args '-archivePath', archivePath
+                    }
+                    if (provisioningProfile != null) {
+                        args "PROVISIONING_PROFILE=$provisioningProfile"
+                    }
+                    if (codeSignIdentity != null) {
+                        args "CODE_SIGN_IDENTITY=$codeSignIdentity"
                     }
                     standardOutput output
                     errorOutput output
