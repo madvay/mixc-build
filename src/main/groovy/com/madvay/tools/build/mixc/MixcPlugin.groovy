@@ -88,6 +88,9 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
 
             tasks.create "xcode${nameFirstUpper}BuildDebug", XcodeBuildTask, {
                 config = 'Debug'
+                if (val.target != null) {
+                    target = val.target
+                }
                 dirPath = val.dir.absolutePath
                 dependsOn 'xcodePreBuildDebug'
                 xcodeProject = val.projectName
@@ -100,6 +103,9 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
 
             tasks.create "xcode${nameFirstUpper}BuildRelease", XcodeBuildTask, {
                 config = 'Release'
+                if (val.target != null) {
+                    target = val.target
+                }
                 dirPath = val.dir.absolutePath
                 dependsOn 'xcodePreBuildRelease'
                 xcodeProject = val.projectName
