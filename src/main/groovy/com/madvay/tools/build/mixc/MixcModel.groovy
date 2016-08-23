@@ -54,6 +54,19 @@ class MixcModel {
          * of the same name.`
          */
         String testTarget = null
+	    /**
+         * (Optional) UUID of the provisioning profile to use
+         * (ex. 8e2a7a62-6900-11e6-8b77-86f30ca893d3).
+         */
+        String provisioningProfile = null
+	    /**
+         * (Optional) Name of the provisioning profile to use.
+         */
+        String provisioningProfileName = null
+	    /**
+         * (Optional) Code sign identity to use.
+         */
+        String codeSignIdentity = null
         /**
          * names of other XcodeProject this project depends on.
          */
