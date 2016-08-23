@@ -40,6 +40,7 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                     @Path("mixc") MixcModel mixcConfig) {
         boolean debugEnabled = mixcConfig.debugEnabled
         boolean releaseEnabled = mixcConfig.releaseEnabled
+        boolean autoWireTasks = mixcConfig.autoWireTasks
 
         // Prebuild phase.  We need all native builds (whether j2objc or custom) to occur
         // before our own xcode builds.
@@ -110,9 +111,11 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 enabled = releaseEnabled
             }
 
-            tasks.get('assemble').dependsOn(
-                    "xcode${nameFirstUpper}BuildDebug",
-                    "xcode${nameFirstUpper}BuildRelease")
+            if (autoWireTasks) {
+                tasks.get('assemble').dependsOn(
+                        "xcode${nameFirstUpper}BuildDebug",
+                        "xcode${nameFirstUpper}BuildRelease")
+            }
 
             tasks.create "xcode${nameFirstUpper}ArchiveRelease", XcodeBuildTask, {
                 config = 'Release'
@@ -187,9 +190,11 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                 enabled = releaseEnabled
             }
 
-            tasks.get('clean').dependsOn(
-                    "xcode${nameFirstUpper}CleanDebug",
-                    "xcode${nameFirstUpper}CleanRelease")
+            if (autoWireTasks) {
+                tasks.get('clean').dependsOn(
+                        "xcode${nameFirstUpper}CleanDebug",
+                        "xcode${nameFirstUpper}CleanRelease")
+            }
 
             if (val.testTarget != null) {
                 tasks.create "xcode${nameFirstUpper}TestDebug", XcodeBuildTask, {
@@ -222,9 +227,11 @@ class MixcPlugin extends RuleSource implements Plugin<Project> {
                     enabled = releaseEnabled
                 }
 
-                tasks.get('check').dependsOn(
-                        "xcode${nameFirstUpper}TestDebug",
-                        "xcode${nameFirstUpper}TestRelease")
+                if (autoWireTasks) {
+                    tasks.get('check').dependsOn(
+                            "xcode${nameFirstUpper}TestDebug",
+                            "xcode${nameFirstUpper}TestRelease")
+                }
             }
         }
 
